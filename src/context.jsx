@@ -5,7 +5,27 @@ import { JOBS } from './data';
 const Flags = React.createContext({});
 const UserInfo = React.createContext({});
 const Resources = React.createContext({});
+const ActivityData = React.createContext({});
 const TimeData = React.createContext({});
+
+const ActivityProvider = ({ children }) => {
+  const [activites, setActivites] = useState([
+    ["Sleep", 8, 0],
+    ["Work", 8, 0],
+    ["Eat", 3, 0],
+    ["Chores", 0, 30],
+    ["Slacking", 3, 0],
+    ["Free Time", 1, 30],
+  ]);
+  const act_data = {
+    activites, setActivites
+  };
+  return (
+    <ActivityData.Provider value={act_data}>
+      {children}
+    </ActivityData.Provider>
+  );
+}
 
 const TimeProvider = ({ children }) => {
   const [epoch, setEpoch] = useState(160578000000);
@@ -34,9 +54,10 @@ const FlagProvider = ({ children }) => {
 
 const ResourcesProvider = ({ children }) => {
   const [money, setMoney] = useState(0);
+  const none_format = (a) => a;
   const provider_values = {
     "money": { "value": money, "format": money_format, set: setMoney, show: true },
-    "employees": { "value": money, "format_prefix": "$", set: emptyfunction, show: false }
+    "employees": { "value": 10, "format": none_format, set: emptyfunction, show: true }
   }
   return <Resources.Provider value={provider_values}>{children}</Resources.Provider>
 }
@@ -60,22 +81,25 @@ const UserInfoProvider = ({ children }) => {
 
 const DataProviders = ({ children }) => {
   return (
-    <FlagProvider>
-      <UserInfoProvider>
-        <ResourcesProvider>
-          <TimeProvider>
-            {children}
-          </TimeProvider>
-        </ResourcesProvider>
-      </UserInfoProvider>
-    </FlagProvider>
+    <ActivityProvider>
+      <FlagProvider>
+        <UserInfoProvider>
+          <ResourcesProvider>
+            <TimeProvider>
+              {children}
+            </TimeProvider>
+          </ResourcesProvider>
+        </UserInfoProvider>
+      </FlagProvider>
+    </ActivityProvider>
   );
 }
 
 export {
-  TimeData, TimeProvider,
-  Resources, ResourcesProvider,
-  UserInfo, UserInfoProvider,
-  Flags, FlagProvider,
+  TimeData,
+  Resources,
+  UserInfo,
+  Flags,
+  ActivityData,
   DataProviders,
 }

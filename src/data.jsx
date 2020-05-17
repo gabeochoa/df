@@ -36,13 +36,26 @@ const basic = [
   [
     "Handyman",
     "helping out around the neighborhood",
+    7.25, 0,
+    9, 17,
+  ],
+]
+
+// TODO replace with better names
+// Stolen from groundhog life
+const burger_jobs = [
+  [
+    "Burger Flipper",
+    "helping out around the neighborhood",
     10, 0,
     8, 18,
   ],
+
 ]
 
 const jobdata = [
   ...basic,
+  ...burger_jobs,
   ...cartel_jobs,
 ]
 
@@ -61,7 +74,6 @@ jobdata.forEach((item) => {
     workStart, workEnd
   }
 });
-
 
 export {
   JOBS,

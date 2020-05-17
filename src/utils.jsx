@@ -2,9 +2,30 @@ import React from 'react';
 
 const emptyfunction = () => { }
 
-function money_format(value) { return "$" + value.toFixed(2); }
-const MoneyVisualizer = ({ amount, hoursPerDay }) => {
-  return <span> {money_format(amount)} Per Hour ({money_format(amount * hoursPerDay)} Per Day) </span>;
+function money_format(amt) {
+  let options = {
+    style: 'currency',
+    currency: 'USD',
+    notation: "compact",
+  }
+  return amt.toLocaleString('en-US', options);
+}
+
+const MoneyVisualizer = ({ amount, hoursPerDay, enableColor }) => {
+  return (
+    <>
+      {enableColor &&
+        <span className={amount < 0 ? "message is-danger" : "message is-success"}>
+          {money_format(amount)}/Hour ({money_format(amount * hoursPerDay)})
+        </span>
+      }
+      {!enableColor &&
+        <span>
+          {money_format(amount)}/Hour ({money_format(amount * hoursPerDay)})
+        </span>
+      }
+    </>
+  );
 }
 
 const Table = ({ headers, body }) => {
